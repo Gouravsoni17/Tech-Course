@@ -1,0 +1,69 @@
+<% layout("../views/layouts/boilerplate") %>
+
+<section class="contact-page">
+
+    <!-- LEFT -->
+    <div class="contact-left">
+
+        <div class="contact-tag">
+            Contact Us
+        </div>
+
+        <h1>
+            Let's Build <br><span>Together</span>
+        </h1>
+
+        <p>
+            Have questions about courses, payments or Telegram access?
+            Send us your message and our team will reply soon.
+        </p>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="contact-right">
+
+        <form id="contactForm" class="contact-form">
+
+            <h2>Send Message</h2>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                required
+            >
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                required
+            >
+
+            <input
+                type="tel"
+                name="mobile"
+                placeholder="Mobile Number"
+                required
+            >
+
+            <textarea
+                name="message"
+                rows="3"
+                placeholder="Your Message"
+                required
+            ></textarea>
+
+            <button type="submit">
+                Send Message
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/contact.js"></script>

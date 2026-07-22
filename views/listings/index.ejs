@@ -1,0 +1,317 @@
+<% layout("../views/layouts/boilerplate") %>
+<body>
+
+<!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="tag">Premium Coding Courses</div>
+
+      <h1>
+        Learn Skills <br />
+        That Build <span>Careers</span>
+      </h1>
+
+      <p>
+        Master Web Development, DSA and AI/ML with premium courses.
+      </p>
+
+       <div class="hero-buttons">
+        <button onclick="scrollCourses()" class="primary-btn">
+          Explore Courses
+        </button>
+
+        <button onclick="watchDemo()" class="secondary-btn">
+          Watch Demo
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <img
+        src="/images/SigmaPrime.jpg"
+        alt="coding"
+      />
+      <h3 class="SigmaPrime">Sigma + Prime</h3>
+          <h5 class="discription">AiML, Web Development, Java/C++ DSA</h5>
+          <p class="price">₹799</p>
+      <a href="/listing/sigmaprime"><button  onclick="buyCourse('Java DSA')">
+            Enroll Now!
+          </button></a>
+    </div>
+  </section>
+
+   <!-- Courses -->
+  <section class="courses" id="courses">
+    <h2>Popular Courses</h2>
+
+    <div class="course-grid">
+
+      <div class="course-card">
+        <img
+        src="/images/Prime.jpg"
+        alt="coding"
+      />
+
+        <div class="course-content">
+          <h3>Prime 1.0 AiML</h3>
+          <h5 class="discription">AI/ML Learning & Data Science </h5>
+          <p>₹599</p>
+      
+          <a href="/listing/prime-1"><button  onclick="buyCourse('Sigma')">
+            Enroll Now!
+          </button></a>
+        </div>
+      </div>
+    
+       <div class="course-card">
+        <img
+        src="/images/Sigma.jpg"
+        alt="coding"
+      />
+
+        <div class="course-content">
+          <h3>Sigma 12 </h3>
+          <h5 class="discription">Web Development, Java/C++ DSA</h5>
+          <p>₹599</p>
+
+          <a href="/listing/sigma"><button  onclick="buyCourse('Java DSA')">
+            Enroll Now!
+          </button></a>
+        </div>
+      </div>
+
+       <div class="course-card">
+         <img
+        src="/images/Delta.jpg"
+        alt="coding"
+      />
+
+
+        <div class="course-content">
+          <h3>Delta</h3>
+          <h5 class="discription">Full Stack Web Development MERN</h5>
+          <p>₹399</p>
+
+          <a href="/listing/delta"><button  onclick="buyCourse('Java DSA')">
+            Enroll Now!
+          </button></a>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <img
+        src="/images/Alpha.jpg"
+        alt="coding"
+      />
+
+        <div class="course-content">
+          <h3>Alpha</h3>
+          <h5 class="discription">Basic Java/C++ to Adv DSA</h5>
+          <p>₹399</p>
+
+          <a href="/listing/alpha"><button  onclick="buyCourse('Java DSA')">
+            Enroll Now!
+          </button></a>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <img
+        src="/images/Java.jpg"
+        alt="coding"
+      />
+
+        <div class="course-content">
+          <h3>Java DSA</h3>
+          <h5 class="discription">Basic Java to Adv DSA</h5>
+          <p>₹249</p>
+
+          <a href="/listing/java"><button  onclick="buyCourse('Java DSA')">
+            Enroll Now!
+          </button></a>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <img
+        src="/images/C++.jpg"
+        alt="coding"
+      />
+
+        <div class="course-content">
+          <h3>C++ DSA</h3>
+          <h5 class="discription">Basic C++ to Adv DSA</h5>
+          <p>₹249</p>
+
+          <a href="/listing/c"><button  onclick="buyCourse('Java DSA')">
+            Enroll Now!
+          </button></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+<section class="testimonials" id="reviews">
+  <div class="section-title" >
+    <h2>What <span class="span">Our Students </span>Say</h2>
+    <p>Thousands of students trust TechCourse.</p>
+  </div>
+
+  <div class="testimonial-grid">
+
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p>
+        Best coding platform for affordable premium courses.
+        The UI and Telegram support are amazing.
+      </p>
+      <h3>Mayank Thakur</h3>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p>
+        I learned MERN stack and DSA from TechCourse.
+        Highly recommended for beginners.
+      </p>
+      <h3>Aman Jain</h3>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p>
+        Premium experience with affordable pricing and quick support.
+      </p>
+      <h3>Sneha Patel</h3>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="FAQ">
+  <div class="section-title">
+    <h2>Frequently <span class="span">Asked</span> Questions</h2>
+    <p>Everything you need to know about TechCourse.</p>
+  </div>
+
+  <div class="faq-container">
+    
+    <div class="faq-card">
+      <h3>Why is the course price so low?</h3>
+      <p>
+        This option is mainly for students who truly cannot afford expensive courses.
+        If you can afford the course, please buy it from the official website.
+      </p>
+    </div>
+
+    <div class="faq-card">
+      <h3>How will I access the course?</h3>
+      <p>
+        All course lectures are available on telegram. After payment approval, Telegram group link is provided on your email.
+      </p>
+    </div>
+
+    <div class="faq-card">
+      <h3>Do I get future updates?</h3>
+      <p>
+        Yes, all future updates are included with your purchase.
+      </p>
+    </div>
+
+    <div class="faq-card">
+      <h3>How long does payment verification take?</h3>
+      <p>
+        Usually within a few minutes/hours after screenshot upload.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!--How to Join -->
+  <section class="join-hero" id="HowToJoin">
+
+    <div class="join-top">
+      <div class="join-tag">
+        Easy Joining Process
+      </div>
+
+      <h1>
+        How To <span>Join</span>
+      </h1>
+
+      <p>
+        Follow these simple steps to get instant access
+        to your premium coding course.
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps-container">
+
+      <div class="step-card">
+        <div class="step-number">1</div>
+
+        <h2>Select Course</h2>
+
+        <p>
+          Choose your favorite course from TechCourse platform.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+
+        <h2>Scan QR Code</h2>
+
+        <p>
+          Make payment using UPI QR code provided on course page.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+
+        <h2>Upload Screenshot</h2>
+
+        <p>
+          Upload your payment screenshot for verification.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">4</div>
+
+        <h2>Telegram Access</h2>
+
+        <p>
+          After approval, you will receive Telegram group link on your email.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Important Note -->
+  <section class="important-note">
+
+    <div class="note-box">
+
+      <h2>Important Note</h2>
+
+      <p>
+        Payment verification usually takes only a few minutes.
+        Please upload a clear payment screenshot for faster approval.
+      </p>
+
+      <button onclick="scrollCourses()"  onclick="goHome()">
+        Explore Courses
+      </button>
+
+    </div>
+
+  </section>
+</body>

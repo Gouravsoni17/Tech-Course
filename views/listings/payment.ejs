@@ -1,0 +1,114 @@
+<% layout("../views/layouts/boilerplate") %>
+
+<section class="contact-page">
+
+    <!-- LEFT SIDE -->
+
+    <div class="contact-left">
+
+        <div class="contact-tag">
+            Payment Verification
+        </div>
+
+        <h1>
+            Verify Your <br>
+            <span>Payment</span>
+        </h1>
+
+        <p>
+            After completing the payment, fill out the form and upload
+            your payment screenshot. Our team will verify your payment
+            and send your batch access to your registered email.
+        </p>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="contact-right">
+
+        <form id="paymentForm" class="contact-form" enctype="multipart/form-data">
+
+            <!-- <h2>Payment Verification</h2> -->
+
+            <input
+                type="text"
+                name="course"
+                value="<%= course %>"
+                readonly
+            >
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                required
+            >
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                required
+            >
+
+            <input
+                type="tel"
+                name="mobile"
+                placeholder="Mobile Number"
+                required
+            >
+
+            <input
+                type="text"
+                name="transactionId"
+                placeholder="Transaction ID (Optional)"
+            >
+
+            <label class="upload-title">
+                Upload Payment Screenshot
+            </label>
+
+            <input
+                type="file"
+                id="photo"
+                name="photo"
+                accept="image/*"
+                required
+            >
+
+            <img id="preview">
+
+            <button type="submit">
+
+                Submit Request
+
+            </button>
+
+            <div class="payment-note">
+
+                <b>Important :</b>
+
+                <br>
+
+                ✔ Upload a clear payment screenshot.
+
+                <br>
+
+                ✔ Our team will verify your payment.
+
+                <br>
+
+                ✔ Batch access will be sent to your email.
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="/js/payment.js"></script>
