@@ -87,6 +87,9 @@ const upload = multer({
 
 });
 
+console.log("EMAIL_USER =", process.env.EMAIL_USER);
+console.log("EMAIL_PASS =", process.env.EMAIL_PASS ? "Loaded" : "Not Loaded");
+
 const transporter = nodemailer.createTransport({
 
     service: "gmail",
@@ -103,7 +106,7 @@ const transporter = nodemailer.createTransport({
 
 
 app.get("/", (req,res) =>{
-    res.send("root is working Tech Course");
+     res.render("../views/listings/index.ejs")
 })
 
 app.get("/home", (req,res) =>{
@@ -408,6 +411,8 @@ await transporter.sendMail(userMail);
 });
 
 
-app.listen(8080, () =>{
-    console.log("server is listening on port 8080");
-})
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+    console.log(`Server Running on ${PORT}`);
+});
