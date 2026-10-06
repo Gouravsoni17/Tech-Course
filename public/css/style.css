@@ -241,6 +241,7 @@ body::before {
 
 .course-content {
   padding: 20px;
+  padding-bottom: 10px;
   padding-top: 1px;
 }
 
@@ -250,9 +251,15 @@ body::before {
 
 .course-content p {
   color: #00ff99;
-  margin: 18px 0;
-  font-size: 24px;
+  margin: 1px 0;
+  font-size: 22px;
   font-weight: 700;
+}
+
+.course-title-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 button{
@@ -262,6 +269,7 @@ button{
 .discription{
     color: #eeeeee;
     font-weight: 8;
+    margin-bottom: 8px;
 }
 
 .price{
@@ -445,7 +453,7 @@ footer span {
 
 .testimonial-card h3,
 .faq-card h3 {
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .faq-container {
@@ -754,8 +762,8 @@ footer span {
 }
 
 .step-number {
-  width: 65px;
-  height: 65px;
+  width: 55px;
+  height: 55px;
   background: #00ff99;
   color: black;
   border-radius: 18px;
@@ -763,12 +771,12 @@ footer span {
   align-items: center;
   justify-content: center;
   font-size: 30px;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 25px;
 }
 
 .step-card h2 {
-  font-size: 28px;
+  font-size: 22px;
   margin-bottom: 15px;
 }
 
@@ -922,7 +930,7 @@ footer span {
 .contact-left p{
     color:#9f9f9f;
 
-    font-size:19px;
+    font-size:18px;
 
     line-height:1.9;
 
@@ -1047,6 +1055,7 @@ footer span {
     .contact-left p{
 
         margin:auto;
+        font-size:16px;
     }
 
     .contact-right{

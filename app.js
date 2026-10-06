@@ -3,7 +3,6 @@ const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const multer = require("multer");
-const nodemailer = require("nodemailer");
 const fs = require("fs");
 require("dotenv").config();
 const ejsMate = require("ejs-mate");
@@ -90,20 +89,9 @@ const upload = multer({
 console.log("EMAIL_USER =", process.env.EMAIL_USER);
 console.log("EMAIL_PASS =", process.env.EMAIL_PASS ? "Loaded" : "Not Loaded");
 
-const transporter = nodemailer.createTransport({
+const { Resend } = require("resend");
 
-    service: "gmail",
-
-    auth: {
-
-        user: process.env.EMAIL_USER,
-
-        pass: process.env.EMAIL_PASS
-
-    }
-
-});
-
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.get("/", (req,res) =>{
      res.render("../views/listings/index.ejs")
@@ -158,33 +146,32 @@ app.get("/payment-verification", (req, res) => {
 
 });
 
+
 app.post("/contact", async (req, res) => {
-
     try {
-
         const { name, email, mobile, message } = req.body;
 
+        // Validation
         if (!name || !email || !mobile || !message) {
-
             return res.status(400).json({
                 success: false,
                 message: "Please fill all fields."
             });
-
         }
 
-        const mailOptions = {
-
-            from: process.env.EMAIL_USER,
-
-            to: process.env.EMAIL_USER,
-
-            subject: "📩 New Contact Message",
+        // Send email using Resend
+        const { data, error } = await resend.emails.send({
+            from: "Tech Course <onboarding@resend.dev>",
+            to: ["techcourse.support@gmail.com"],
+            replyTo: email,
+            subject: `📩 New Contact Message - ${name}`,
 
             html: `
-                <h2>New Contact Message</h2>
+                <h2>📩 New Contact Form Message</h2>
 
-                <table border="1" cellpadding="10" cellspacing="0" style="border-collapse:collapse;">
+                <table border="1" cellpadding="10" cellspacing="0"
+                       style="border-collapse: collapse;">
+
                     <tr>
                         <th>Name</th>
                         <td>${name}</td>
@@ -204,12 +191,27 @@ app.post("/contact", async (req, res) => {
                         <th>Message</th>
                         <td>${message}</td>
                     </tr>
+
                 </table>
+
+                <br>
+
+                <p>
+                    <b>Tech Course Website</b>
+                </p>
             `
+        });
 
-        };
+        if (error) {
+            console.log("Resend Error:", error);
 
-        await transporter.sendMail(mailOptions);
+            return res.status(500).json({
+                success: false,
+                message: "Email could not be sent."
+            });
+        }
+
+        console.log("Contact Email Sent:", data.id);
 
         res.json({
             success: true,
@@ -217,16 +219,13 @@ app.post("/contact", async (req, res) => {
         });
 
     } catch (err) {
-
-        console.log(err);
+        console.log("Server Error:", err);
 
         res.status(500).json({
             success: false,
             message: "Something went wrong."
         });
-
     }
-
 });
 
 
@@ -242,6 +241,7 @@ app.post("/payment-verification", upload.single("photo"), async (req, res) => {
             transactionId
         } = req.body;
 
+        // Validation
         if (!course || !name || !email || !mobile || !req.file) {
 
             return res.status(400).json({
@@ -250,153 +250,270 @@ app.post("/payment-verification", upload.single("photo"), async (req, res) => {
             });
 
         }
-        //Changess try kar ry hai......
-        // const mailOptions = {
-        const adminMail = {
 
-            from: process.env.EMAIL_USER,
 
-            to: process.env.EMAIL_USER,
+        // ==========================================
+        // 1️⃣ ADMIN EMAIL
+        // ==========================================
 
-            subject: `💳 Payment Verification - ${course}`,
+        const { data: adminData, error: adminError } =
+            await resend.emails.send({
 
-            html: `
-                <h2>New Payment Verification Request</h2>
+                from: "Tech Course <onboarding@resend.dev>",
 
-                <table border="1" cellpadding="10" cellspacing="0" style="border-collapse:collapse;">
+                to: ["techcourse.support@gmail.com"],
 
-                    <tr>
-                        <th>Course</th>
-                        <td>${course}</td>
-                    </tr>
+                replyTo: email,
 
-                    <tr>
-                        <th>Name</th>
-                        <td>${name}</td>
-                    </tr>
+                subject: `💳 Payment Verification - ${course}`,
 
-                    <tr>
-                        <th>Email</th>
-                        <td>${email}</td>
-                    </tr>
+                html: `
+                    <h2>💳 New Payment Verification Request</h2>
 
-                    <tr>
-                        <th>Mobile</th>
-                        <td>${mobile}</td>
-                    </tr>
+                    <table border="1"
+                           cellpadding="10"
+                           cellspacing="0"
+                           style="border-collapse:collapse;">
 
-                    <tr>
-                        <th>Transaction ID</th>
-                        <td>${transactionId || "Not Provided"}</td>
-                    </tr>
+                        <tr>
+                            <th>Course</th>
+                            <td>${course}</td>
+                        </tr>
 
-                </table>
-            `,
+                        <tr>
+                            <th>Name</th>
+                            <td>${name}</td>
+                        </tr>
 
-            attachments: [
+                        <tr>
+                            <th>Email</th>
+                            <td>${email}</td>
+                        </tr>
 
-                {
+                        <tr>
+                            <th>Mobile</th>
+                            <td>${mobile}</td>
+                        </tr>
 
-                    filename: req.file.originalname,
+                        <tr>
+                            <th>Transaction ID</th>
+                            <td>${transactionId || "Not Provided"}</td>
+                        </tr>
 
-                    path: req.file.path
+                    </table>
 
-                }
+                    <br>
 
-            ]
+                    <p>
+                        📎 Payment screenshot is attached with this email.
+                    </p>
 
-        };
+                    <p>
+                        <b>Tech Course Website</b>
+                    </p>
+                `,
+               attachments: [
+    {
+        filename: req.file.originalname,
+        content: fs.readFileSync(req.file.path)
+    }
+]
+                 });
 
-        // await transporter.sendMail(mailOptions);
-        await transporter.sendMail(adminMail);
 
-        const userMail = {
+        // Admin email failed
+        if (adminError) {
 
-    from: process.env.EMAIL_USER,
+            console.log("Admin Email Error:", adminError);
 
-    to: email,
+            return res.status(500).json({
+                success: false,
+                message: "Payment verification email could not be sent."
+            });
 
-    subject: "✅ Payment Verification Submitted Successfully",
+        }
 
-    html: `
 
-    <div style="max-width:600px;margin:auto;padding:30px;background:#111827;border-radius:12px;font-family:Arial,sans-serif;color:#ffffff;">
+        console.log("Admin Payment Email Sent:", adminData.id);
 
-        <h2 style="text-align:center;color:#22c55e;">
-            ✅ Payment Verification Submitted Successfully
-        </h2>
 
-        <p>Hello <b>${name}</b>,</p>
+        // ==========================================
+        // 2️⃣ USER CONFIRMATION EMAIL
+        // ==========================================
 
-        <p>
-            Thank you for submitting your payment verification request.
-        </p>
+        const { data: userData, error: userError } =
+            await resend.emails.send({
 
-        <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+                from: "Tech Course <onboarding@resend.dev>",
 
-            <tr>
-                <td style="padding:10px;border:1px solid #374151;"><b>Course</b></td>
-                <td style="padding:10px;border:1px solid #374151;">${course}</td>
-            </tr>
+                to: [email],
 
-        </table>
+                subject: "✅ Payment Verification Submitted Successfully",
 
-        <div style="background:#1f2937;padding:20px;border-left:5px solid #22c55e;border-radius:8px;">
+                html: `
 
-            <p style="margin:0;line-height:28px;">
+                    <div style="
+                        max-width:600px;
+                        margin:auto;
+                        padding:30px;
+                        background:#111827;
+                        border-radius:12px;
+                        font-family:Arial,sans-serif;
+                        color:#ffffff;
+                    ">
 
-                Thank you! Our team will verify your payment and send your course access to your registered email within <b>2–12 hours</b>.
+                        <h2 style="
+                            text-align:center;
+                            color:#22c55e;
+                        ">
+                            ✅ Payment Verification Submitted Successfully
+                        </h2>
 
-            </p>
 
-        </div>
+                        <p>
+                            Hello <b>${name}</b>,
+                        </p>
 
-        <br>
 
-        <p>
-            Please do not submit multiple payment requests.
-        </p>
+                        <p>
+                            Thank you for submitting your payment
+                            verification request.
+                        </p>
 
-        <hr style="margin:25px 0;border-color:#374151;">
 
-        <p style="text-align:center;font-size:14px;color:#9ca3af;">
+                        <table style="
+                            width:100%;
+                            border-collapse:collapse;
+                            margin:20px 0;
+                        ">
 
-            Thank you for choosing <b>Tech Course</b> ❤️
+                            <tr>
 
-        </p>
+                                <td style="
+                                    padding:10px;
+                                    border:1px solid #374151;
+                                ">
+                                    <b>Course</b>
+                                </td>
 
-    </div>
+                                <td style="
+                                    padding:10px;
+                                    border:1px solid #374151;
+                                ">
+                                    ${course}
+                                </td>
 
-    `
+                            </tr>
 
-};
+                        </table>
 
-await transporter.sendMail(userMail);
 
-        // Delete uploaded screenshot
+                        <div style="
+                            background:#1f2937;
+                            padding:20px;
+                            border-left:5px solid #22c55e;
+                            border-radius:8px;
+                        ">
+
+                            <p style="
+                                margin:0;
+                                line-height:28px;
+                            ">
+
+                                Thank you! Our team will verify your
+                                payment and send your course access to
+                                your registered email within
+                                <b>2–12 hours</b>.
+
+                            </p>
+
+                        </div>
+
+
+                        <br>
+
+
+                        <p>
+                            Please do not submit multiple payment requests.
+                        </p>
+
+
+                        <hr style="
+                            margin:25px 0;
+                            border-color:#374151;
+                        ">
+
+
+                        <p style="
+                            text-align:center;
+                            font-size:14px;
+                            color:#9ca3af;
+                        ">
+
+                            Thank you for choosing
+                            <b>Tech Course</b> ❤️
+
+                        </p>
+
+                    </div>
+
+                `
+            });
+
+
+        // User email failed
+        if (userError) {
+
+            console.log("User Email Error:", userError);
+
+            // Admin email already sent, so don't tell user
+            // that the complete request failed.
+            return res.json({
+
+                success: true,
+
+                message:
+                    "Payment verification submitted successfully. " +
+                    "However, confirmation email could not be sent."
+
+            });
+
+        }
+
+
+        console.log("User Confirmation Email Sent:", userData.id);
+
+
+        // ==========================================
+        // 3️⃣ DELETE UPLOADED FILE
+        // ==========================================
+
         fs.unlink(req.file.path, (err) => {
 
             if (err) {
-
                 console.log("Delete Error:", err);
-
             }
 
         });
+
+
+        // ==========================================
+        // 4️⃣ SUCCESS RESPONSE
+        // ==========================================
 
         res.json({
 
             success: true,
 
-            message: "Your payment verification request has been submitted successfully."
+            message:
+                "Payment verification submitted successfully."
 
         });
 
-    }
 
-    catch (err) {
+    } catch (err) {
 
-        console.log(err);
+        console.log("Payment Verification Error:", err);
 
         res.status(500).json({
 
@@ -409,6 +526,7 @@ await transporter.sendMail(userMail);
     }
 
 });
+
 
 
 const PORT = process.env.PORT || 8080;
